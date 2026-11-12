@@ -2,198 +2,439 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#172b35">
-  <title>Mana Latviešu Valoda</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#172b35">
+<title>Mana Latviešu Valoda</title>
 
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f5;
-      color: #24343b;
-    }
-
-    header {
-      background: #172b35;
-      color: white;
-      padding: 24px;
-    }
-
-    header h1 { margin: 0; font-size: 25px; }
-    header p { color: #c5d5d5; margin-bottom: 0; }
-
-    main {
-      max-width: 1050px;
-      margin: auto;
-      padding: 25px 18px;
-    }
-
-    .welcome { margin-bottom: 25px; }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 14px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 8px #00000009;
-    }
-
-    .number {
-      font-size: 28px;
-      font-weight: bold;
-      color: #287b68;
-    }
-
-    h2 { font-size: 19px; }
-
-    input, button {
-      padding: 12px;
-      border-radius: 7px;
-      font-size: 15px;
-    }
-
-    input {
-      border: 1px solid #ccd5d2;
-      width: 100%;
-      margin-bottom: 10px;
-    }
-
-    button {
-      background: #287b68;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover { background: #205f52; }
-
-    .word {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid #eee;
-      gap: 12px;
-    }
-
-    .word strong { color: #287b68; }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #71817c;
-      font-size: 13px;
-    }
-  </style>
+<style>
+:root {
+  --dark:#172b35;
+  --green:#287b68;
+  --bg:#f3f6f5;
+  --white:#fff;
+  --muted:#71817c;
+  --border:#e3eae7;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:#26363b;
+}
+header {
+  background:var(--dark);
+  color:white;
+  padding:22px max(20px,calc((100% - 1050px)/2));
+}
+header h1 {margin:0;font-size:23px}
+header p {color:#c5d5d5;margin-bottom:0}
+main {max-width:1050px;margin:auto;padding:24px 18px}
+h2 {font-size:19px}
+.welcome {margin-bottom:22px}
+.stats {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:12px;
+  margin-bottom:22px;
+}
+.card {
+  background:white;
+  border-radius:12px;
+  padding:19px;
+  box-shadow:0 2px 8px #00000008;
+  margin-bottom:16px;
+}
+.number {font-size:27px;font-weight:bold;color:var(--green)}
+.muted {color:var(--muted);font-size:13px}
+.tabs {
+  display:flex;
+  gap:8px;
+  margin:18px 0;
+  flex-wrap:wrap;
+}
+.tab {
+  background:#e6eeeb;
+  color:#31534a;
+}
+.tab.active {background:var(--green);color:white}
+input,select,textarea {
+  width:100%;
+  padding:12px;
+  border:1px solid #ccd8d3;
+  border-radius:7px;
+  font:inherit;
+  background:white;
+  margin-top:6px;
+}
+textarea {min-height:75px;resize:vertical}
+label {font-size:13px;font-weight:bold;display:block;margin-top:12px}
+button {
+  border:0;
+  padding:11px 15px;
+  border-radius:7px;
+  background:var(--green);
+  color:white;
+  font-size:14px;
+  cursor:pointer;
+}
+button.secondary {background:#e6eeeb;color:#31534a}
+button.danger {background:#f8e8e6;color:#a33d36}
+button:disabled {opacity:.5}
+.formgrid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.actions {display:flex;gap:7px;flex-wrap:wrap}
+.word {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:15px;
+  margin:10px 0;
+}
+.wordtop {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+.word strong {font-size:20px;color:var(--green)}
+.tag {
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:20px;
+  background:#e8f2ee;
+  color:#286653;
+  font-size:11px;
+  margin:4px 3px 0 0;
+}
+.worddetails {font-size:13px;line-height:1.6;margin-top:10px}
+.hidden {display:none!important}
+.empty {text-align:center;padding:25px;color:var(--muted)}
+footer {text-align:center;padding:25px;color:var(--muted);font-size:13px}
+@media(max-width:550px) {
+  .formgrid {grid-template-columns:1fr}
+  main {padding:18px 13px}
+  header {padding:20px 16px}
+  .wordtop {flex-direction:column}
+}
+</style>
 </head>
 
 <body>
+<header>
+  <h1>🇱🇻 Mana Latviešu Valoda</h1>
+  <p>Seu espaço pessoal para aprender letão.</p>
+</header>
 
-  <header>
-    <h1>🇱🇻 Mana Latviešu Valoda</h1>
-    <p>Seu espaço pessoal para aprender letão.</p>
-  </header>
+<main>
+  <section class="welcome">
+    <h2>Sveiki! 👋</h2>
+    <p>Vamos aprender um pouco de letão todos os dias.</p>
+  </section>
 
-  <main>
-    <section class="welcome">
-      <h2>Sveiki! 👋</h2>
-      <p>Bem-vindo ao seu ambiente de aprendizagem.</p>
-    </section>
+  <section class="stats">
+    <div class="card">
+      <p class="muted">Palavras cadastradas</p>
+      <div class="number" id="total">0</div>
+    </div>
+    <div class="card">
+      <p class="muted">Substantivos</p>
+      <div class="number" id="nouns">0</div>
+    </div>
+    <div class="card">
+      <p class="muted">Verbos</p>
+      <div class="number" id="verbs">0</div>
+    </div>
+  </section>
 
-    <section class="stats">
-      <div class="card">
-        <p>Palavras cadastradas</p>
-        <div class="number" id="total">0</div>
-      </div>
+  <section class="card">
+    <h2>📚 Meu vocabulário</h2>
 
-      <div class="card">
-        <p>Textos estudados</p>
-        <div class="number">0</div>
-      </div>
+    <div class="tabs">
+      <button class="tab active" id="quickTab" onclick="setMode('quick')">⚡ Cadastro rápido</button>
+      <button class="tab" id="fullTab" onclick="setMode('full')">📖 Cadastro completo</button>
+    </div>
 
-      <div class="card">
-        <p>Dias de estudo</p>
-        <div class="number">0</div>
-      </div>
-    </section>
+    <form id="wordForm">
+      <input type="hidden" id="editId">
 
-    <section class="card" style="margin-top:20px">
-      <h2>📚 Meu vocabulário</h2>
+      <label for="word">Palavra em letão *</label>
+      <input id="word" required placeholder="Ex.: māja">
 
-      <input id="latvian" placeholder="Palavra em letão">
-      <input id="translation" placeholder="Tradução em português">
+      <label for="translation">Tradução em português *</label>
+      <input id="translation" required placeholder="Ex.: casa">
 
-      <button onclick="addWord()">Adicionar palavra</button>
-
-      <div id="words" style="margin-top:20px"></div>
-    </section>
-  </main>
-
-  <footer>
-    Mana Latviešu Valoda · Mācīsimies kopā! 🇱🇻
-  </footer>
-
-  <script>
-    let vocabulary = JSON.parse(
-      localStorage.getItem("vocabulary") || "[]"
-    );
-
-    function addWord() {
-      const word = document.getElementById("latvian").value.trim();
-      const translation = document.getElementById("translation").value.trim();
-
-      if (!word || !translation) {
-        alert("Preencha os dois campos!");
-        return;
-      }
-
-      vocabulary.push({ word, translation });
-
-      localStorage.setItem(
-        "vocabulary",
-        JSON.stringify(vocabulary)
-      );
-
-      document.getElementById("latvian").value = "";
-      document.getElementById("translation").value = "";
-
-      renderWords();
-    }
-
-    function renderWords() {
-      const container = document.getElementById("words");
-
-      container.innerHTML = vocabulary.map(item => `
-        <div class="word">
-          <strong>${escapeHTML(item.word)}</strong>
-          <span>${escapeHTML(item.translation)}</span>
+      <div id="advanced" class="hidden">
+        <div class="formgrid">
+          <div>
+            <label for="category">Categoria gramatical</label>
+            <select id="category">
+              <option value="">Selecione</option>
+              <option>Substantivo</option>
+              <option>Verbo</option>
+              <option>Adjetivo</option>
+              <option>Advérbio</option>
+              <option>Pronome</option>
+              <option>Preposição</option>
+              <option>Conjunção</option>
+              <option>Numeral</option>
+              <option>Expressão</option>
+              <option>Outros</option>
+            </select>
+          </div>
+          <div>
+            <label for="gender">Gênero</label>
+            <select id="gender">
+              <option value="">Não aplicável / não informado</option>
+              <option>Masculino</option>
+              <option>Feminino</option>
+            </select>
+          </div>
+          <div>
+            <label for="level">Nível</label>
+            <select id="level">
+              <option value="">Não definido</option>
+              <option>A1</option><option>A2</option>
+              <option>B1</option><option>B2</option>
+              <option>C1</option><option>C2</option>
+            </select>
+          </div>
+          <div>
+            <label for="theme">Tema</label>
+            <input id="theme" placeholder="Ex.: Moradia">
+          </div>
+          <div>
+            <label for="plural">Plural</label>
+            <input id="plural" placeholder="Ex.: mājas">
+          </div>
         </div>
-      `).join("");
 
-      document.getElementById("total").textContent =
-        vocabulary.length;
-    }
+        <label for="example">Frase de exemplo em letão</label>
+        <textarea id="example" placeholder="Šī ir mana māja."></textarea>
 
-    function escapeHTML(value) {
-      return value.replace(/[&<>"']/g, char => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[char]);
-    }
+        <label for="exampleTranslation">Tradução da frase</label>
+        <textarea id="exampleTranslation" placeholder="Esta é minha casa."></textarea>
 
-    renderWords();
-  </script>
+        <label for="notes">Observações gramaticais</label>
+        <textarea id="notes" placeholder="Ex.: Substantivo feminino, primeira declinação..."></textarea>
+      </div>
 
+      <div class="actions" style="margin-top:16px">
+        <button type="submit" id="saveButton">Adicionar palavra</button>
+        <button type="button" class="secondary hidden" id="cancelButton" onclick="cancelEdit()">Cancelar edição</button>
+      </div>
+      <p class="muted">* Campos obrigatórios.</p>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>🔎 Consultar vocabulário</h2>
+    <input id="search" placeholder="Pesquisar palavra, tradução ou categoria..." oninput="renderWords()">
+    <div id="words"></div>
+  </section>
+</main>
+
+<footer>
+  Mana Latviešu Valoda · Mācīsimies kopā! 🇱🇻
+</footer>
+
+<script>
+const STORAGE_KEY = "vocabulary";
+
+let vocabulary = [];
+let mode = "quick";
+
+try {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  vocabulary = Array.isArray(saved) ? saved.map((item,index) => ({
+    id: item.id || String(Date.now()) + index,
+    word: item.word || "",
+    translation: item.translation || "",
+    category: item.category || "",
+    gender: item.gender || "",
+    level: item.level || "",
+    theme: item.theme || "",
+    plural: item.plural || "",
+    example: item.example || "",
+    exampleTranslation: item.exampleTranslation || "",
+    notes: item.notes || ""
+  })) : [];
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(vocabulary));
+} catch(error) {
+  alert("Não foi possível ler o vocabulário salvo.");
+}
+
+const $ = id => document.getElementById(id);
+
+function setMode(newMode) {
+  mode = newMode;
+  $("advanced").classList.toggle("hidden",mode !== "full");
+  $("quickTab").classList.toggle("active",mode === "quick");
+  $("fullTab").classList.toggle("active",mode === "full");
+}
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(vocabulary));
+}
+
+$("wordForm").addEventListener("submit",function(event) {
+  event.preventDefault();
+
+  const id = $("editId").value;
+  const previous = vocabulary.find(item => item.id === id);
+
+  const item = {
+    id: id || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
+    word: $("word").value.trim(),
+    translation: $("translation").value.trim(),
+    category: $("category").value,
+    gender: $("gender").value,
+    level: $("level").value,
+    theme: $("theme").value.trim(),
+    plural: $("plural").value.trim(),
+    example: $("example").value.trim(),
+    exampleTranslation: $("exampleTranslation").value.trim(),
+    notes: $("notes").value.trim()
+  };
+
+  if(!item.word || !item.translation) return;
+
+  if(previous) {
+    vocabulary = vocabulary.map(w => w.id === id ? item : w);
+  } else {
+    vocabulary.push(item);
+  }
+
+  saveData();
+  cancelEdit();
+  renderWords();
+});
+
+function editWord(id) {
+  const item = vocabulary.find(w => w.id === id);
+  if(!item) return;
+
+  setMode("full");
+  $("editId").value = item.id;
+
+  Object.keys(item).forEach(key => {
+    if($(key)) $(key).value = item[key] || "";
+  });
+
+  $("saveButton").textContent = "Salvar alterações";
+  $("cancelButton").classList.remove("hidden");
+  $("wordForm").scrollIntoView({behavior:"smooth"});
+}
+
+function cancelEdit() {
+  $("wordForm").reset();
+  $("editId").value = "";
+  $("saveButton").textContent = "Adicionar palavra";
+  $("cancelButton").classList.add("hidden");
+  setMode("quick");
+}
+
+function deleteWord(id) {
+  const item = vocabulary.find(w => w.id === id);
+  if(!item || !confirm("Deseja excluir a palavra " + item.word + "?")) return;
+
+  vocabulary = vocabulary.filter(w => w.id !== id);
+  saveData();
+  renderWords();
+}
+
+function renderWords() {
+  const query = $("search").value.trim().toLocaleLowerCase();
+  const filtered = vocabulary.filter(w =>
+    Object.values(w).some(value =>
+      String(value).toLocaleLowerCase().includes(query)
+    )
+  );
+
+  $("total").textContent = vocabulary.length;
+  $("nouns").textContent = vocabulary.filter(w => w.category === "Substantivo").length;
+  $("verbs").textContent = vocabulary.filter(w => w.category === "Verbo").length;
+
+  const container = $("words");
+  container.replaceChildren();
+
+  if(!filtered.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = vocabulary.length ? "Nenhum resultado encontrado." : "Seu vocabulário está vazio. Cadastre sua primeira palavra!";
+    container.appendChild(empty);
+    return;
+  }
+
+  filtered.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "word";
+
+    const top = document.createElement("div");
+    top.className = "wordtop";
+
+    const info = document.createElement("div");
+    const title = document.createElement("strong");
+    title.textContent = item.word;
+
+    const translation = document.createElement("div");
+    translation.textContent = item.translation;
+
+    info.append(title,translation);
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    const edit = document.createElement("button");
+    edit.className = "secondary";
+    edit.textContent = "Editar";
+    edit.onclick = () => editWord(item.id);
+
+    const del = document.createElement("button");
+    del.className = "danger";
+    del.textContent = "Excluir";
+    del.onclick = () => deleteWord(item.id);
+
+    actions.append(edit,del);
+    top.append(info,actions);
+    card.appendChild(top);
+
+    const tags = document.createElement("div");
+    [item.category,item.gender,item.level,item.theme].filter(Boolean).forEach(value => {
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = value;
+      tags.appendChild(tag);
+    });
+    card.appendChild(tags);
+
+    const details = document.createElement("div");
+    details.className = "worddetails";
+
+    const addDetail = (label,value) => {
+      if(!value) return;
+      const line = document.createElement("div");
+      const strong = document.createElement("b");
+      strong.textContent = label + ": ";
+      line.append(strong,document.createTextNode(value));
+      details.appendChild(line);
+    };
+
+    addDetail("Plural",item.plural);
+    addDetail("Exemplo",item.example);
+    addDetail("Tradução",item.exampleTranslation);
+    addDetail("Observações",item.notes);
+
+    card.appendChild(details);
+    container.appendChild(card);
+  });
+}
+
+renderWords();
+</script>
 </body>
 </html>
