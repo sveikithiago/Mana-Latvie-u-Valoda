@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#172b35">
+  <title>Mana Latviešu Valoda</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f5;
+      color: #24343b;
+    }
+
+    header {
+      background: #172b35;
+      color: white;
+      padding: 24px;
+    }
+
+    header h1 { margin: 0; font-size: 25px; }
+    header p { color: #c5d5d5; margin-bottom: 0; }
+
+    main {
+      max-width: 1050px;
+      margin: auto;
+      padding: 25px 18px;
+    }
+
+    .welcome { margin-bottom: 25px; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px #00000009;
+    }
+
+    .number {
+      font-size: 28px;
+      font-weight: bold;
+      color: #287b68;
+    }
+
+    h2 { font-size: 19px; }
+
+    input, button {
+      padding: 12px;
+      border-radius: 7px;
+      font-size: 15px;
+    }
+
+    input {
+      border: 1px solid #ccd5d2;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background: #287b68;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover { background: #205f52; }
+
+    .word {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      gap: 12px;
+    }
+
+    .word strong { color: #287b68; }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #71817c;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>🇱🇻 Mana Latviešu Valoda</h1>
+    <p>Seu espaço pessoal para aprender letão.</p>
+  </header>
+
+  <main>
+    <section class="welcome">
+      <h2>Sveiki! 👋</h2>
+      <p>Bem-vindo ao seu ambiente de aprendizagem.</p>
+    </section>
+
+    <section class="stats">
+      <div class="card">
+        <p>Palavras cadastradas</p>
+        <div class="number" id="total">0</div>
+      </div>
+
+      <div class="card">
+        <p>Textos estudados</p>
+        <div class="number">0</div>
+      </div>
+
+      <div class="card">
+        <p>Dias de estudo</p>
+        <div class="number">0</div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:20px">
+      <h2>📚 Meu vocabulário</h2>
+
+      <input id="latvian" placeholder="Palavra em letão">
+      <input id="translation" placeholder="Tradução em português">
+
+      <button onclick="addWord()">Adicionar palavra</button>
+
+      <div id="words" style="margin-top:20px"></div>
+    </section>
+  </main>
+
+  <footer>
+    Mana Latviešu Valoda · Mācīsimies kopā! 🇱🇻
+  </footer>
+
+  <script>
+    let vocabulary = JSON.parse(
+      localStorage.getItem("vocabulary") || "[]"
+    );
+
+    function addWord() {
+      const word = document.getElementById("latvian").value.trim();
+      const translation = document.getElementById("translation").value.trim();
+
+      if (!word || !translation) {
+        alert("Preencha os dois campos!");
+        return;
+      }
+
+      vocabulary.push({ word, translation });
+
+      localStorage.setItem(
+        "vocabulary",
+        JSON.stringify(vocabulary)
+      );
+
+      document.getElementById("latvian").value = "";
+      document.getElementById("translation").value = "";
+
+      renderWords();
+    }
+
+    function renderWords() {
+      const container = document.getElementById("words");
+
+      container.innerHTML = vocabulary.map(item => `
+        <div class="word">
+          <strong>${escapeHTML(item.word)}</strong>
+          <span>${escapeHTML(item.translation)}</span>
+        </div>
+      `).join("");
+
+      document.getElementById("total").textContent =
+        vocabulary.length;
+    }
+
+    function escapeHTML(value) {
+      return value.replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    renderWords();
+  </script>
+
+</body>
+</html>
